@@ -18,30 +18,30 @@ class ManagerApplicationTests {
     @InjectMocks
     private CosService cosService;
 
-    @Test
-    void testCreateBucket() {
-        Bucket bucket = cosService.createBucket("test-1256052415");
-        System.out.println(bucket);
-    }
+    // @Test
+    // void testCreateBucket() {
+    //     Bucket bucket = cosService.createBucket("test-1256052415");
+    //     System.out.println(bucket);
+    // }
 
-    @Test
-    void testDeleteBucket() {
-        cosService.deleteBucket("test-1256052415");
-    }
+    // @Test
+    // void testDeleteBucket() {
+    //     cosService.deleteBucket("test-1256052415");
+    // }
 
-    @Test
-    void testListBuckets() {
-        List<Bucket> buckets = cosService.listBuckets();
-        System.out.println(buckets);
-    }
+    // @Test
+    // void testListBuckets() {
+    //     List<Bucket> buckets = cosService.listBuckets();
+    //     System.out.println(buckets);
+    // }
 
-    @Test
-    void testDownloadObject() {
-        ObjectParam param = new ObjectParam();
-        param.setBucket("myblog-1256052415");
-        param.setKey("Centos安装Redis/使用RedisTemplate操作Redis.png");
-        param.setLocalPath("D:\\tencent_cos\\使用RedisTemplate操作Redis.png");
-        cosService.downloadObject(param);
-    }
+    // @Test
+    // void testDownloadObject() {
+    //     ObjectParam param = new ObjectParam();
+    //     param.setBucket("myblog-1256052415");
+    //     param.setKey("Centos安装Redis/使用RedisTemplate操作Redis.png");
+    //     param.setLocalPath("D:\\tencent_cos\\使用RedisTemplate操作Redis.png");
+    //     cosService.downloadObject(param);
+    // }
 
 }

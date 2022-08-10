@@ -8,6 +8,7 @@ import com.qcloud.cos.model.COSObjectSummary;
 import com.qcloud.cos.model.CannedAccessControlList;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.util.List;
 
@@ -20,39 +21,45 @@ import java.util.List;
 @Service
 public class CosService {
 
+    @Resource
+    private BucketUtils bucketUtils;
+
+    @Resource
+    private FileUtils fileUtils;
+
     public Bucket createBucket(String bucket) {
-        return BucketUtils.createBucket(bucket, CannedAccessControlList.PublicRead);
+        return bucketUtils.createBucket(bucket, CannedAccessControlList.PublicRead);
     }
 
     public void deleteBucket(String bucket) {
-        BucketUtils.deleteBucket(bucket);
+        bucketUtils.deleteBucket(bucket);
     }
 
     public List<Bucket> listBuckets() {
-        return BucketUtils.listBuckets();
+        return bucketUtils.listBuckets();
     }
 
     public Bucket getBucketByName(String name) {
-        return BucketUtils.getBucketByName(name);
+        return bucketUtils.getBucketByName(name);
     }
 
     public List<COSObjectSummary> listObjects(ObjectParam param) {
-        return BucketUtils.listObjects(param);
+        return bucketUtils.listObjects(param);
     }
 
     public void downloadObject(ObjectParam param) {
-        BucketUtils.downloadObject(param);
+        bucketUtils.downloadObject(param);
     }
 
     public void deleteObject(ObjectParam param) {
-        BucketUtils.deleteObject(param);
+        bucketUtils.deleteObject(param);
     }
 
     public void uploadSmallFile(ObjectParam param) {
-        FileUtils.uploadSmallFile(param);
+        fileUtils.uploadSmallFile(param);
     }
 
     public void uploadSmallFile(ObjectParam param, File file) {
-        FileUtils.uploadSmallFile(param, file);
+        fileUtils.uploadSmallFile(param, file);
     }
 }
