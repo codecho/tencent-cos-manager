@@ -7,6 +7,7 @@ import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.region.Region;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * @desc 客户端工具类
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
  * @version 1.0
  * @date 2022/8/6 10:45
  */
+@Component
 public class ClientUtils {
 
     // 腾讯云api SecretId，访问https://console.cloud.tencent.com/cam/capi获取
