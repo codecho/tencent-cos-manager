@@ -5,8 +5,10 @@ import com.qcloud.cos.COSClient;
 import com.qcloud.cos.exception.CosClientException;
 import com.qcloud.cos.model.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,11 @@ import java.util.List;
  * @version 1.0
  */
 @Slf4j
+@Component
 public class BucketUtils {
+
+    @Resource
+    private ClientUtils clientUtils;
 
     /**
      * @desc 创建存储桶
@@ -27,9 +33,9 @@ public class BucketUtils {
      * @param bucket 存储桶名称(格式：name-APPID)
      * @param access bucket权限(Private(私有读写)、其他可选有 PublicRead（公有读私有写）、PublicReadWrite（公有读写）)
      */
-    public static Bucket createBucket(String bucket, CannedAccessControlList access) {
+    public Bucket createBucket(String bucket, CannedAccessControlList access) {
         // 获取cos client
-        COSClient client = ClientUtils.getClient();
+        COSClient client = clientUtils.getClient();
 
         CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucket);
         createBucketRequest.setCannedAcl(access);
@@ -52,8 +58,8 @@ public class BucketUtils {
      * @date 2022-08-06 12:38:14
      * @param bucket 存储桶名称
      */
-    public static void deleteBucket(String bucket) {
-        COSClient client = ClientUtils.getClient();
+    public void deleteBucket(String bucket) {
+        COSClient client = clientUtils.getClient();
         client.deleteBucket(bucket);
         client.shutdown();
     }
@@ -63,8 +69,8 @@ public class BucketUtils {
      * @author codecho
      * @date 2022-08-06 11:33:17
      */
-    public static List<Bucket> listBuckets() {
-        COSClient client = ClientUtils.getClient();
+    public List<Bucket> listBuckets() {
+        COSClient client = clientUtils.getClient();
         List<Bucket> buckets = client.listBuckets();
         client.shutdown();
         return buckets;
@@ -76,8 +82,8 @@ public class BucketUtils {
      * @date 2022-08-07 15:07:52
      * @param name 桶名称
      */
-    public static Bucket getBucketByName(String name) {
-        COSClient client = ClientUtils.getClient();
+    public Bucket getBucketByName(String name) {
+        COSClient client = clientUtils.getClient();
         List<Bucket> buckets = client.listBuckets();
         client.shutdown();
         for (Bucket bucket : buckets) {
@@ -94,8 +100,8 @@ public class BucketUtils {
      * @date 2022-08-06 12:03:44
      * @param param 存储对象参数
      */
-    public static List<COSObjectSummary> listObjects(ObjectParam param) {
-        COSClient client = ClientUtils.getClient();
+    public List<COSObjectSummary> listObjects(ObjectParam param) {
+        COSClient client = clientUtils.getClient();
 
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest();
         listObjectsRequest.setBucketName(param.getBucket());
@@ -107,7 +113,7 @@ public class BucketUtils {
         listObjectsRequest.setDelimiter(param.getDelimiter());
         // 设置最大遍历出多少个对象, 一次listobject最大支持1000
         listObjectsRequest.setMaxKeys(Math.min(param.getSize(), 1000));
-        ObjectListing objectListing = null;
+        ObjectListing objectListing;
         List<COSObjectSummary> objectList = new ArrayList<>();
         do {
             try {
@@ -139,8 +145,8 @@ public class BucketUtils {
      * @date 2022-08-06 12:19:30
      * @param param 存储对象参数
      */
-    public static void downloadObject(ObjectParam param) {
-        COSClient client = ClientUtils.getClient();
+    public void downloadObject(ObjectParam param) {
+        COSClient client = clientUtils.getClient();
         GetObjectRequest request = new GetObjectRequest(param.getBucket(), param.getKey());
         client.getObject(request, new File(param.getLocalPath()));
         client.shutdown();
@@ -152,8 +158,8 @@ public class BucketUtils {
      * @date 2022-08-06 12:23:41
      * @param param 存储对象参数
      */
-    public static void deleteObject(ObjectParam param) {
-        COSClient client = ClientUtils.getClient();
+    public void deleteObject(ObjectParam param) {
+        COSClient client = clientUtils.getClient();
         client.deleteObject(param.getBucket(), param.getKey());
         client.shutdown();
     }
